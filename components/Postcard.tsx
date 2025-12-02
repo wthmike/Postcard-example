@@ -4,30 +4,6 @@ import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { SlideData } from '../types';
 
-// Augment global JSX namespace to include Three.js elements
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      group: any;
-      mesh: any;
-      boxGeometry: any;
-      meshStandardMaterial: any;
-    }
-  }
-}
-
-// Augment React JSX namespace to include Three.js elements (fixes 'Property does not exist' errors)
-declare module 'react' {
-  namespace JSX {
-    interface IntrinsicElements {
-      group: any;
-      mesh: any;
-      boxGeometry: any;
-      meshStandardMaterial: any;
-    }
-  }
-}
-
 interface PostcardProps {
   data: SlideData;
   customFront: string | null;

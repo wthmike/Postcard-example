@@ -5,34 +5,6 @@ import * as THREE from 'three';
 import Postcard from './Postcard';
 import { SlideData } from '../types';
 
-// Augment global JSX namespace to include Three.js elements
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      mesh: any;
-      planeGeometry: any;
-      shaderMaterial: any;
-      ambientLight: any;
-      spotLight: any;
-      pointLight: any;
-    }
-  }
-}
-
-// Augment React JSX namespace to include Three.js elements (fixes 'Property does not exist' errors)
-declare module 'react' {
-  namespace JSX {
-    interface IntrinsicElements {
-      mesh: any;
-      planeGeometry: any;
-      shaderMaterial: any;
-      ambientLight: any;
-      spotLight: any;
-      pointLight: any;
-    }
-  }
-}
-
 interface SceneProps {
   currentSlideData: SlideData;
   customFront: string | null;

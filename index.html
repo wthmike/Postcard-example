@@ -17,6 +17,7 @@
         padding: 0;
         overflow: hidden; /* Prevent scrolling, full screen app */
         background-color: #C8E5F9; /* Updated to match scene background */
+        overscroll-behavior: none; /* Prevent bounce effects */
       }
       body {
         color: #212121;
@@ -44,6 +45,12 @@
 </head>
   <body>
     <div id="root"></div>
+    <script>
+      // CRITICAL: Force all wheel events to be passive.
+      // This tells the browser that we will NOT call preventDefault(),
+      // allowing the wheel event to bubble up to the parent window immediately.
+      window.addEventListener('wheel', function() {}, { passive: true });
+    </script>
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
