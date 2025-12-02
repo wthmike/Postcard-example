@@ -35,8 +35,7 @@ const App: React.FC = () => {
 
   return (
     <div 
-      className="relative w-full h-full bg-white overflow-hidden selection:bg-black selection:text-white"
-      onPointerEnter={() => setHovered(true)}
+      className="fixed inset-0 w-full h-full bg-white overflow-hidden selection:bg-black selection:text-white"
       onPointerLeave={() => {
         setHovered(false);
         setCurrentSlideIndex(0); // Always reset to Front view when leaving
@@ -49,6 +48,7 @@ const App: React.FC = () => {
           customFront={customFront}
           customBack={customBack}
           hovered={hovered}
+          onPostcardHover={() => setHovered(true)}
         />
       </div>
 

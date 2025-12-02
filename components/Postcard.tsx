@@ -33,6 +33,7 @@ interface PostcardProps {
   customFront: string | null;
   customBack: string | null;
   hovered: boolean;
+  onHover: () => void;
 }
 
 const DEFAULT_FRONT = 'https://cdn.prod.website-files.com/67938aa1b31a177d7bdc1016/692a135de2572136e6ff1b4e_Black%20Friday%20UK.jpg';
@@ -45,7 +46,7 @@ const easeOutQuint = (x: number): number => {
   return 1 - Math.pow(1 - x, 5);
 };
 
-const Postcard: React.FC<PostcardProps> = ({ data, customFront, customBack, hovered }) => {
+const Postcard: React.FC<PostcardProps> = ({ data, customFront, customBack, hovered, onHover }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   
   // Load textures
@@ -155,7 +156,15 @@ const Postcard: React.FC<PostcardProps> = ({ data, customFront, customBack, hove
 
   return (
     <group>
-      <mesh ref={meshRef} castShadow receiveShadow>
+      <mesh 
+        ref={meshRef} 
+        castShadow 
+        receiveShadow
+        onPointerEnter={(e) => {
+          e.stopPropagation();
+          onHover();
+        }}
+      >
         <boxGeometry args={[6.0, 4.0, 0.06]} />
         
         {/* Edges - Clean White Paper */}

@@ -38,6 +38,7 @@ interface SceneProps {
   customFront: string | null;
   customBack: string | null;
   hovered: boolean;
+  onPostcardHover: () => void;
 }
 
 // --- CUSTOM SHADER BACKGROUND ---
@@ -46,7 +47,7 @@ const GradientBackground: React.FC<{ hovered: boolean }> = ({ hovered }) => {
   
   const uniforms = useMemo(() => ({
     uColorA: { value: new THREE.Color('#ffffff') }, // Center color
-    uColorB: { value: new THREE.Color('#f5f5f7') }, // Edge color
+    uColorB: { value: new THREE.Color('#ffffff') }, // Edge color
   }), []);
 
   useFrame((state, delta) => {
@@ -55,9 +56,9 @@ const GradientBackground: React.FC<{ hovered: boolean }> = ({ hovered }) => {
     const lerpSpeed = 2.0 * delta;
 
     // TARGET COLORS
-    // Clean Mode: Pure White Center -> Very subtle Off-White Edge
+    // Clean Mode: Pure White
     const cleanCenter = new THREE.Color('#ffffff');
-    const cleanEdge = new THREE.Color('#f2f2f2');
+    const cleanEdge = new THREE.Color('#ffffff');
     
     // Hover Mode: Soft Blue Center -> Requested #C8E5F9 Edge
     const hoverCenter = new THREE.Color('#e6f4ff'); // Lighter center for depth
@@ -74,8 +75,9 @@ const GradientBackground: React.FC<{ hovered: boolean }> = ({ hovered }) => {
     state.scene.background = null;
   });
 
+  // Scale increased to [1000, 1000, 1] to ensure it covers the viewport on all aspect ratios
   return (
-    <mesh ref={meshRef} position={[0, 0, -50]} scale={[150, 100, 1]}>
+    <mesh ref={meshRef} position={[0, 0, -50]} scale={[1000, 1000, 1]}>
       <planeGeometry args={[1, 1]} />
       <shaderMaterial
         uniforms={uniforms}
@@ -213,7 +215,7 @@ const CinematicLights: React.FC<{ hovered: boolean }> = ({ hovered }) => {
   );
 };
 
-const Scene: React.FC<SceneProps> = ({ currentSlideData, customFront, customBack, hovered }) => {
+const Scene: React.FC<SceneProps> = ({ currentSlideData, customFront, customBack, hovered, onPostcardHover }) => {
   return (
     <Canvas
       shadows
@@ -232,23 +234,24 @@ const Scene: React.FC<SceneProps> = ({ currentSlideData, customFront, customBack
       <Suspense fallback={null}>
         <Environment preset="studio" blur={0.8} intensity={0.2} />
 
+        {/* Stronger Contact Shadow for Clean Mode */}
+        <ContactShadows 
+          opacity={hovered ? 0.6 : 0.9} 
+          scale={20} 
+          blur={hovered ? 2.5 : 1.4} 
+          far={4.5} 
+          position={[0, -3.5, 0]} 
+          color="#000000"
+        />
+
         <Postcard 
           data={currentSlideData} 
           customFront={customFront}
           customBack={customBack}
           hovered={hovered}
+          onHover={onPostcardHover}
         />
       </Suspense>
-
-      <ContactShadows
-        position={[0, -3.5, 0]} 
-        resolution={1024}
-        scale={40}
-        blur={1.4}
-        opacity={hovered ? 0.6 : 0.9} // Shadows visible in both states, lighter on hover
-        far={20}
-        color="#001a33" // Slight blue tint to shadow
-      />
     </Canvas>
   );
 };
