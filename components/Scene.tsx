@@ -19,6 +19,20 @@ declare global {
   }
 }
 
+// Augment React JSX namespace to include Three.js elements (fixes 'Property does not exist' errors)
+declare module 'react' {
+  namespace JSX {
+    interface IntrinsicElements {
+      mesh: any;
+      planeGeometry: any;
+      shaderMaterial: any;
+      ambientLight: any;
+      spotLight: any;
+      pointLight: any;
+    }
+  }
+}
+
 interface SceneProps {
   currentSlideData: SlideData;
   customFront: string | null;

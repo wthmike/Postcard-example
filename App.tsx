@@ -35,7 +35,7 @@ const App: React.FC = () => {
 
   return (
     <div 
-      className="relative w-full h-screen bg-white overflow-hidden selection:bg-black selection:text-white"
+      className="relative w-full h-full bg-white overflow-hidden selection:bg-black selection:text-white"
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => {
         setHovered(false);
